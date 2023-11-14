@@ -65,6 +65,17 @@ dispatcher = FastUrlDispatcher()
 app = web.Application(router=dispatcher)
 ```
 
+### Caveats
+
+If you have multiple handlers that resolve to the same URL, this module will always prefer the static name over a dynamic name. For example:
+
+```
+        app.router.add_get(r"/second/{user}/info", handler)
+        app.router.add_get("/second/bob/info", handler)
+```
+
+`"/second/bob/info"` will always be matched before `r"/second/{user}/info"`
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
