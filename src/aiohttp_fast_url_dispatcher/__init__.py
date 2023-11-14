@@ -25,7 +25,7 @@ class FastUrlDispatcher(UrlDispatcher):
             canonical = canonical.split("{")[0].rstrip("/")
         # There may be multiple resources for a canonical path
         # so we use a list to avoid falling back to a full linear search
-        self._resource_index.setdefault(canonical, []).append(resource)
+        self._resource_index.setdefault(canonical or "/", []).append(resource)
 
     async def resolve(self, request: web.Request) -> UrlMappingMatchInfo:
         """Resolve a request."""
