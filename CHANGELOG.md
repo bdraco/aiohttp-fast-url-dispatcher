@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.3.0 (2023-11-27)
+
+### What's Changed
+
+- feat: add support for newer python by @bdraco in https://github.com/bdraco/aiohttp-fast-url-dispatcher/pull/6
+- fix: release process by @bdraco in https://github.com/bdraco/aiohttp-fast-url-dispatcher/pull/7
+- chore(deps): update deps by @bdraco in https://github.com/bdraco/aiohttp-fast-url-dispatcher/pull/8
+
+## v0.2.0 (2023-11-27)
+
+### What's Changed
+
+- chore: pin version to <3.10 by @bdraco in https://github.com/bdraco/aiohttp-fast-url-dispatcher/pull/5
+- feat: improve dispatcher performance by @bdraco in https://github.com/bdraco/aiohttp-fast-url-dispatcher/pull/4
+
 ## v0.1.1 (2023-11-14)
 
 ### Fix
