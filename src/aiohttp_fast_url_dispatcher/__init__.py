@@ -1,5 +1,6 @@
 __version__ = "0.1.1"
 
+import logging
 
 from aiohttp import web
 from aiohttp.web_urldispatcher import (
@@ -7,6 +8,8 @@ from aiohttp.web_urldispatcher import (
     UrlDispatcher,
     UrlMappingMatchInfo,
 )
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class FastUrlDispatcher(UrlDispatcher):
@@ -42,6 +45,7 @@ class FastUrlDispatcher(UrlDispatcher):
                 break
             url_part = url_part.rpartition("/")[0] or "/"
 
+        _LOGGER.warning("No route found for %s %s", request.method, request.path)
         # Finally, fallback to the linear search
         return await super().resolve(request)
 
