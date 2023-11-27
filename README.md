@@ -42,6 +42,9 @@ A faster URL dispatcher for aiohttp
 
 The default `UrlDispatcher` implementation does a linear search every which can have a significant [TimeComplexity](https://wiki.python.org/moin/TimeComplexity) when dispatching urls when there are a lot of routes. `FastUrlDispatcher` keeps an index of the urls which allows for fast dispatch.
 
+This library will become obsolete with aiohttp 3.10 as the changes
+are expected to merge upstream via https://github.com/aio-libs/aiohttp/pull/7829
+
 ## Installation
 
 Install this via pip (or your favourite package manager):
