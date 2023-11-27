@@ -20,27 +20,27 @@ class FastUrlDispatcher(UrlDispatcher):
     def register_resource(self, resource: AbstractResource) -> None:
         """Register a resource."""
         super().register_resource(resource)
-        canonical = resource.canonical
-        if "{" in canonical:  # strip at the first { to allow for variables
-            canonical = canonical.split("{")[0].rstrip("/")
+        canonical = resource.canonical.partition("{")[0].rstrip("/") or "/"
         # There may be multiple resources for a canonical path
         # so we use a list to avoid falling back to a full linear search
-        self._resource_index.setdefault(canonical or "/", []).append(resource)
+        self._resource_index.setdefault(canonical, []).append(resource)
 
     async def resolve(self, request: web.Request) -> UrlMappingMatchInfo:
         """Resolve a request."""
-        url_parts = request.rel_url.raw_parts
         resource_index = self._resource_index
-
-        # Walk the url parts looking for candidates
-        for i in range(len(url_parts), 0, -1):
-            url_part = "/" + "/".join(url_parts[1:i])
-            if (resource_candidates := resource_index.get(url_part)) is not None:
-                for candidate in resource_candidates:
-                    if (
-                        match_dict := (await candidate.resolve(request))[0]
-                    ) is not None:
-                        return match_dict
+        # Walk the url parts looking for candidates. We walk the url backwards
+        # to ensure the most explicit match is found first. If there are multiple
+        # candidates for a given url part because there are multiple resources
+        # registered for the same canonical path, we resolve them in a linear
+        # fashion to ensure registration order is respected.
+        url_part = request.rel_url.raw_path
+        while url_part:
+            for candidate in resource_index.get(url_part, ()):
+                if (match_dict := (await candidate.resolve(request))[0]) is not None:
+                    return match_dict
+            if url_part == "/":
+                break
+            url_part = url_part.rpartition("/")[0] or "/"
 
         # Finally, fallback to the linear search
         return await super().resolve(request)
