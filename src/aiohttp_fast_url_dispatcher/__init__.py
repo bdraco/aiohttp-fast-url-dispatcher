@@ -34,7 +34,7 @@ class FastUrlDispatcher(UrlDispatcher):
         # registered for the same canonical path, we resolve them in a linear
         # fashion to ensure registration order is respected.
         url_part = request.rel_url.raw_path
-        while url_part:
+        while url_part:  # pragma: no branch
             for candidate in resource_index.get(url_part, ()):
                 if (match_dict := (await candidate.resolve(request))[0]) is not None:
                     return match_dict
