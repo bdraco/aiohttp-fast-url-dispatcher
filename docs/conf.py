@@ -7,7 +7,7 @@
 project = "aiohttp-fast-url-dispatcher"
 copyright = "2023, J. Nick Koston"
 author = "J. Nick Koston"
-release = "0.1.1"
+release = "0.3.1"
 
 # General configuration
 extensions = [
